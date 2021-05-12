@@ -1,9 +1,31 @@
 package mazerunner.engine;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 public class GameEngine {
+    private int numOfCoins;
+    private int numOfTraps;
+    private int numOfApples;
+    private int numOfExits;
+
+    public int getNumOfCoins() {
+        return numOfCoins;
+    }
+
+    public int getNumOfTraps() {
+        return numOfTraps;
+    }
+
+    public int getNumOfApples() {
+        return numOfApples;
+    }
+
+    public int getNumOfExits() {
+        return numOfExits;
+    }
+
     private boolean end = false;
 
     public boolean isEnd() {
@@ -54,64 +76,26 @@ public class GameEngine {
      */
 
     public void createInitialMap() {
+        for(String[] i:map){
+            Arrays.fill(i,"_");
+        }
         int traps = getDifficulty();
         int coins = 5;
         int apples = 10 - getDifficulty();
         int exitCell = 1;
-
-
-        for (int row = 0; row < 10; row++) {
-
-            for (int cell = 0; cell < 10; cell++) {
-                switch ((int) (Math.random() * (10 - 0 + 1) + 0)) {
-                    case 0:
-                        map[row][cell] = "*";
-                        break;
-
-                    case 1:
-                        if (coins > 0) {
-                            map[row][cell] = "c";
-                            coins -= 1;
-                        } else {
-                            map[row][cell] = "*";
-                        }
-                        break;
-
-                    case 2:
-                        if (exitCell > 0) {
-                            map[row][cell] = "e";
-                            exitCell -= 1;
-                        } else {
-                            map[row][cell] = "*";
-                        }
-                        break;
-
-                    case 3:
-                        if (apples > 0) {
-                            map[row][cell] = "a";
-                            apples -= 1;
-                        } else {
-                            map[row][cell] = "*";
-                        }
-                        break;
-
-                    case 4:
-                        if (traps > 0) {
-                            map[row][cell] = "t";
-                            traps -= 1;
-                        } else {
-                            map[row][cell] = "*";
-                        }
-                        break;
-                    default:
-                        map[row][cell] = "*";
-
-
-                }
+        int[] numCells = new int[]{traps, coins, apples, exitCell};
+        String[] cells = new String[]{"t","c","a","e"};
+        for(int i = 0;i < cells.length;i++){
+            while(numCells[i] > 0){
+                map[(int) (Math.random() * (9 - 0 + 1) + 0)][(int) (Math.random() * (9 - 0 + 1) + 0)] = cells[i];
+                numCells[i] -=1;
             }
-
         }
-        map[9][0] = ">";
+
+
+
+
+        //map[9][0] = ">";
     }
 
     public void printMap() {
@@ -140,6 +124,12 @@ public class GameEngine {
     }
     public void setUnder(int x, int y, String s){
         map[x][y] = s;
+    }
+
+    public static void main(String[] args) {
+        GameEngine e = new GameEngine(10);
+        e.createInitialMap();
+        e.printMap();
     }
 }
 

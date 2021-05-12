@@ -21,15 +21,15 @@ public class playText {
             switch (engine.returnUnder(p.getPlayerX(), p.getPlayerY())) {
                 case "c":
                     p.setCoins(p.getCoins() + 1);
-                    engine.setUnder(p.getPlayerX(), p.getPlayerY(), "*");
+                    engine.setUnder(p.getPlayerX(), p.getPlayerY(), "_");
                     break;
                 case "t":
                     p.setCoins(p.getCoins() - 1);
                     engine.setUnder(p.getPlayerX(), p.getPlayerY(), "t");
                     break;
                 case "a":
-                    p.setStamina(p.getStamina() + 1);
-                    engine.setUnder(p.getPlayerX(), p.getPlayerY(), "*");
+                    p.setStamina(p.getStamina() + 3);
+                    engine.setUnder(p.getPlayerX(), p.getPlayerY(), "_");
             }
             if (p.getStamina() < 1 || p.getCoins() < 0) {
                 engine.setEnd(true);
