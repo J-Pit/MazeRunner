@@ -48,14 +48,16 @@ public class Player {
     }
 
     public void move(String direction){
+        setStamina(getStamina() -1);
+
         switch (direction){
             case "left": PlayerY -= 1;
             break;
-            case "up": PlayerX += 1;
+            case "up": PlayerX -= 1;
             break;
             case "right": PlayerY += 1;
             break;
-            case "down": PlayerX -= 1;
+            case "down": PlayerX += 1;
             break;
         }
 

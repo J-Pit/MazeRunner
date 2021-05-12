@@ -1,8 +1,18 @@
 package mazerunner.engine;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class GameEngine {
+    private boolean end = false;
+
+    public boolean isEnd() {
+        return end;
+    }
+
+    public void setEnd(boolean win) {
+        this.end = win;
+    }
 
     private int Difficulty = 5;
 
@@ -16,7 +26,7 @@ public class GameEngine {
 
     /**
      * An example board to store the current game state.
-     *
+     * <p>
      * Note: depending on your game, you might want to change this from 'int' to String or something?
      */
     private String[][] map;
@@ -53,46 +63,48 @@ public class GameEngine {
         for (int row = 0; row < 10; row++) {
 
             for (int cell = 0; cell < 10; cell++) {
-                switch ((int)(Math.random()*(10-0+1)+0)){
-                    case 0 : map[row][cell] = "*";
-                    break;
-
-                    case 1: if (coins > 0){
-                        map[row][cell] = "c";
-                        coins -= 1;
-                    }
-                    else {
+                switch ((int) (Math.random() * (10 - 0 + 1) + 0)) {
+                    case 0:
                         map[row][cell] = "*";
-                    }
-                    break;
+                        break;
 
-                    case 2: if (exitCell > 0){
-                        map[row][cell] = "e";
-                        exitCell -= 1;
-                    }
-                    else {
-                        map[row][cell] = "*";
-                    }
-                    break;
+                    case 1:
+                        if (coins > 0) {
+                            map[row][cell] = "c";
+                            coins -= 1;
+                        } else {
+                            map[row][cell] = "*";
+                        }
+                        break;
 
-                    case 3: if (apples > 0){
-                        map[row][cell] = "a";
-                        apples -= 1;
-                    }
-                    else {
-                        map[row][cell] = "*";
-                    }
-                    break;
+                    case 2:
+                        if (exitCell > 0) {
+                            map[row][cell] = "e";
+                            exitCell -= 1;
+                        } else {
+                            map[row][cell] = "*";
+                        }
+                        break;
 
-                    case 4: if (traps > 0){
-                        map[row][cell] = "t";
-                        traps -= 1;
-                    }
-                    else {
+                    case 3:
+                        if (apples > 0) {
+                            map[row][cell] = "a";
+                            apples -= 1;
+                        } else {
+                            map[row][cell] = "*";
+                        }
+                        break;
+
+                    case 4:
+                        if (traps > 0) {
+                            map[row][cell] = "t";
+                            traps -= 1;
+                        } else {
+                            map[row][cell] = "*";
+                        }
+                        break;
+                    default:
                         map[row][cell] = "*";
-                    }
-                    break;
-                    default: map[row][cell] = "*";
 
 
                 }
@@ -114,25 +126,25 @@ public class GameEngine {
     }
 
 
-    private void drawPlayer(int x, int y){
+    public void drawPlayer(int x, int y) {
+        String under = map[x][y];
         map[x][y] = "P";
         printMap();
-    }
+        map[x][y] = under;
 
 
-    public static void main (String[]args){
-            GameEngine engine = new GameEngine(10);
-            System.out.printf("The size of map is %d * %d\n", engine.getSize(), engine.getSize());
-            engine.createInitialMap();
-            engine.printMap();
-            Player p = new Player();
-            engine.drawPlayer(p.getPlayerX(), p.getPlayerY());
-            p.move("up");
-            engine.drawPlayer(p.getPlayerX(),p.getPlayerY());
-
-
-
-
-        }
 
     }
+    public String returnUnder(int x, int y){
+        return map[x][y];
+    }
+    public void setUnder(int x, int y, String s){
+        map[x][y] = s;
+    }
+}
+
+
+
+
+
+
