@@ -87,7 +87,7 @@ public class GameEngine {
         String[] cells = new String[]{"t","c","a","e"};
         for(int i = 0;i < cells.length;i++){
             while(numCells[i] > 0){
-                map[(int) (Math.random() * (9 - 0 + 1) + 0)][(int) (Math.random() * (9 - 0 + 1) + 0)] = cells[i];
+                map[(int) (Math.random() * (9 - 0 + 1) + 0)][(int) (Math.random() * (8 - 0 + 1) + 0)] = cells[i];
                 numCells[i] -=1;
             }
         }

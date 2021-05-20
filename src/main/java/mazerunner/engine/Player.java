@@ -11,16 +11,8 @@ public class Player {
         return PlayerY;
     }
 
-    public void setPlayerY(int playerY) {
-        PlayerY = playerY;
-    }
-
     public int getPlayerX() {
         return PlayerX;
-    }
-
-    public void setPlayerX(int playerX) {
-        PlayerX = playerX;
     }
 
     public int getStamina() {
@@ -47,6 +39,19 @@ public class Player {
         this.coins = coins;
     }
 
+    public int canMove(int coordinate){
+        if(coordinate >9){
+
+            return 9;
+        }
+        else if(coordinate<0){
+
+
+            return 0;
+        }
+        else return coordinate;
+    }
+
     public void move(String direction){
         setStamina(getStamina() -1);
 
@@ -60,9 +65,24 @@ public class Player {
             case "down": PlayerX += 1;
             break;
         }
+        if(PlayerX >9){
+
+            PlayerX = 9;
+        }
+        else if(PlayerX<0){
+            PlayerX = 0;
+        }
+        if(PlayerY >9){
+
+            PlayerY = 9;
+        }
+        else if(PlayerY<0){
+            PlayerY = 0;
+        }
+    }
 
     }
 
 
 
-}
+

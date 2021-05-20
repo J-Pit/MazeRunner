@@ -12,12 +12,14 @@ public class playText {
         engine.drawPlayer(p.getPlayerX(), p.getPlayerY());
         while (!engine.isEnd()) {
 
-            System.out.println("Stamina:" + p.getStamina());
-            System.out.println("coins:" + p.getCoins());
+            System.out.printf("Stamina: %d\n",p.getStamina());
+            System.out.printf("Coins: %d\n",p.getCoins());
             Scanner myObj = new Scanner(System.in);
             String userName = myObj.nextLine();
             p.move(userName);
             engine.drawPlayer(p.getPlayerX(), p.getPlayerY());
+            System.out.println(p.getPlayerX());
+            System.out.println(p.getPlayerY());
             switch (engine.returnUnder(p.getPlayerX(), p.getPlayerY())) {
                 case "c":
                     p.setCoins(p.getCoins() + 1);
@@ -30,6 +32,11 @@ public class playText {
                 case "a":
                     p.setStamina(p.getStamina() + 3);
                     engine.setUnder(p.getPlayerX(), p.getPlayerY(), "_");
+                    break;
+                case "e":
+                    engine.setEnd(true);
+                    System.out.println("You win!");
+                    break;
             }
             if (p.getStamina() < 1 || p.getCoins() < 0) {
                 engine.setEnd(true);
