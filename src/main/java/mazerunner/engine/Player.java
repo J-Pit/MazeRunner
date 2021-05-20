@@ -15,6 +15,14 @@ public class Player {
         return PlayerX;
     }
 
+    public void setPlayerX(int playerX) {
+        PlayerX = playerX;
+    }
+
+    public void setPlayerY(int playerY) {
+        PlayerY = playerY;
+    }
+
     public int getStamina() {
         return Stamina;
     }

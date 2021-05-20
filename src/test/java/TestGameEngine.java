@@ -12,16 +12,5 @@ public class TestGameEngine {
 
     }
 
-    @Test
-    void testCells() {
-        GameEngine ge = new GameEngine(10);
-        ge.setDifficulty(5);
-        ge.createInitialMap();
 
-        assertEquals(5, ge.getNumOfApples());
-        assertEquals(5, ge.getNumOfCoins());
-        assertEquals(1, ge.getNumOfExits());
-        assertEquals(5, ge.getNumOfTraps());
-
-    }
 }

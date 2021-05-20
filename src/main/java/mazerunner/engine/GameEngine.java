@@ -1,30 +1,11 @@
 package mazerunner.engine;
 
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 public class GameEngine {
-    private int numOfCoins;
-    private int numOfTraps;
-    private int numOfApples;
-    private int numOfExits;
-
-    public int getNumOfCoins() {
-        return numOfCoins;
-    }
-
-    public int getNumOfTraps() {
-        return numOfTraps;
-    }
-
-    public int getNumOfApples() {
-        return numOfApples;
-    }
-
-    public int getNumOfExits() {
-        return numOfExits;
-    }
 
     private boolean end = false;
 
@@ -44,6 +25,26 @@ public class GameEngine {
 
     public void setDifficulty(int difficulty) {
         Difficulty = difficulty;
+    }
+    private int traps = Difficulty;
+    private int coins = 5;
+    private int apples = 10 - Difficulty;
+    private int exitCell = 1;
+
+    public int getTraps() {
+        return traps;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public int getApples() {
+        return apples;
+    }
+
+    public int getExitCell() {
+        return exitCell;
     }
 
     /**
@@ -79,23 +80,17 @@ public class GameEngine {
         for(String[] i:map){
             Arrays.fill(i,"_");
         }
-        int traps = getDifficulty();
-        int coins = 5;
-        int apples = 10 - getDifficulty();
-        int exitCell = 1;
+
         int[] numCells = new int[]{traps, coins, apples, exitCell};
         String[] cells = new String[]{"t","c","a","e"};
         for(int i = 0;i < cells.length;i++){
             while(numCells[i] > 0){
-                map[(int) (Math.random() * (9 - 0 + 1) + 0)][(int) (Math.random() * (8 - 0 + 1) + 0)] = cells[i];
+                map[(int) (Math.random() * (8 + 1) + 0)][(int) (Math.random() * (9 + 1) + 0)] = cells[i];
                 numCells[i] -=1;
             }
         }
 
-
-
-
-        //map[9][0] = ">";
+        map[9][0] = ">";
     }
 
     public void printMap() {
@@ -126,6 +121,20 @@ public class GameEngine {
         map[x][y] = s;
     }
 
+    public void outputMap(PrintWriter o){
+        for(String[] i : map){
+            for(String n:i){
+                o.print(n);
+            }
+            o.print("\n");
+        }
+    }
+    public void inputMap(Scanner s){
+        for(int i = 0; i<9;i++){
+            map[i] = s.nextLine().split("");
+        }
+
+    }
     public static void main(String[] args) {
         GameEngine e = new GameEngine(10);
         e.createInitialMap();

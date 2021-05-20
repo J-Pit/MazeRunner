@@ -1,10 +1,15 @@
 package mazerunner.engine;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class playText {
 
-    public void playGame() {
+    public void playGame() throws IOException {
         GameEngine engine = new GameEngine(10);
         System.out.printf("The size of map is %d * %d\n", engine.getSize(), engine.getSize());
         engine.createInitialMap();
@@ -14,9 +19,27 @@ public class playText {
 
             System.out.printf("Stamina: %d\n",p.getStamina());
             System.out.printf("Coins: %d\n",p.getCoins());
-            Scanner myObj = new Scanner(System.in);
-            String userName = myObj.nextLine();
-            p.move(userName);
+            Scanner S = new Scanner(System.in);
+            String s = S.nextLine();
+            p.move(s);
+            if (s.equals("save")){
+                PrintWriter output = new PrintWriter("save.txt");
+                engine.outputMap(output);
+                output.println(p.getPlayerX());
+                output.println(p.getPlayerY());
+                output.println(p.getStamina());
+                output.println(p.getCoins());
+                output.close();
+            }
+            else if (s.equals("load")){
+                Scanner input = new Scanner(new File("save.txt"));
+                engine.inputMap(input);
+                String temp = Files.readAllLines(Path.of("save.txt")).get(10);
+                p.setPlayerX(Integer.parseInt(temp));
+                temp = Files.readAllLines(Path.of("save.txt")).get(11);
+                p.setPlayerY(Integer.parseInt(temp));
+                engine.drawPlayer(p.getPlayerX(), p.getPlayerY());
+            }
             engine.drawPlayer(p.getPlayerX(), p.getPlayerY());
             System.out.println(p.getPlayerX());
             System.out.println(p.getPlayerY());
@@ -46,7 +69,7 @@ public class playText {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         playText p = new playText();
         p.playGame();
     }
