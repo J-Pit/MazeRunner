@@ -48,6 +48,21 @@ public class GameEngine {
     }
 
     /**
+     * Iterates through the map and counts for a specific cell for testing purposes
+     */
+    public int getCell(String c){
+        int count = 0;
+        for(String[] i :map){
+            for(String n : i){
+                if (n == c){
+                    count +=1;
+                }
+            }
+        }
+        return count;
+    }
+
+    /**
      * An example board to store the current game state.
      * <p>
      * Note: depending on your game, you might want to change this from 'int' to String or something?
@@ -72,10 +87,11 @@ public class GameEngine {
         return map.length;
     }
 
-    /**
-     * Plays a text-based game
-     */
 
+    /**
+     * adds traps, coins, apples and an exit to map
+     * @// TODO: 25/5/21 fix cells being overwritten
+     */
     public void createInitialMap() {
         for(String[] i:map){
             Arrays.fill(i,"_");
@@ -85,7 +101,7 @@ public class GameEngine {
         String[] cells = new String[]{"t","c","a","e"};
         for(int i = 0;i < cells.length;i++){
             while(numCells[i] > 0){
-                map[(int) (Math.random() * (8 + 1) + 0)][(int) (Math.random() * (9 + 1) + 0)] = cells[i];
+                map[(int) (Math.random() * (8 + 1))][(int) (Math.random() * (9 + 1))] = cells[i];
                 numCells[i] -=1;
             }
         }
@@ -93,6 +109,9 @@ public class GameEngine {
         map[9][0] = ">";
     }
 
+    /**
+     * prints map to screen without player
+     */
     public void printMap() {
         for (String[] row : map) {
             for (String cell : row) {
@@ -104,7 +123,9 @@ public class GameEngine {
         System.out.println();
     }
 
-
+    /**
+     * prints map to screen with player
+     */
     public void drawPlayer(int x, int y) {
         String under = map[x][y];
         map[x][y] = "P";
@@ -114,13 +135,18 @@ public class GameEngine {
 
 
     }
+    /**
+     * Returns the cell where the player is
+     */
     public String returnUnder(int x, int y){
         return map[x][y];
     }
     public void setUnder(int x, int y, String s){
         map[x][y] = s;
     }
-
+    /**
+     * outputs the map to .txt files
+     */
     public void outputMap(PrintWriter o){
         for(String[] i : map){
             for(String n:i){
@@ -129,16 +155,14 @@ public class GameEngine {
             o.print("\n");
         }
     }
+    /**
+     * loads the map from a .txt file
+     */
     public void inputMap(Scanner s){
         for(int i = 0; i<9;i++){
             map[i] = s.nextLine().split("");
         }
 
-    }
-    public static void main(String[] args) {
-        GameEngine e = new GameEngine(10);
-        e.createInitialMap();
-        e.printMap();
     }
 }
 

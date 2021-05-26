@@ -47,19 +47,6 @@ public class Player {
         this.coins = coins;
     }
 
-    public int canMove(int coordinate){
-        if(coordinate >9){
-
-            return 9;
-        }
-        else if(coordinate<0){
-
-
-            return 0;
-        }
-        else return coordinate;
-    }
-
     public void move(String direction){
         setStamina(getStamina() -1);
 

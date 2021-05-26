@@ -12,5 +12,13 @@ public class TestGameEngine {
 
     }
 
+    @Test
+    void testMap(){
+        GameEngine ge = new GameEngine(10);
+        ge.createInitialMap();
+        assertEquals(ge.getDifficulty(), ge.getCell("t"));
+
+    }
+
 
 }
