@@ -1,17 +1,13 @@
 package mazerunner.gui;
 
 import javafx.fxml.FXML;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
+
 
 import mazerunner.engine.GameEngine;
 
@@ -37,27 +33,17 @@ public class Controller {
     private Cell[][] cell =  new Cell[g.getSize()][g.getSize()];
         // Pane to hold cell
 
-    HashMap<String,String> cellImages = new HashMap<String,String>();
     @FXML
     public void initialize(){
         System.out.println(grid.getRowCount());
-        cellImages.put("c", "file:resources/coin.bmp");
-        cellImages.put("t", "file:resources/trap.bmp");
-        cellImages.put("a", "file:resources/apple.bmp");
-        cellImages.put("e", "file:resources/exit.bmp");
-        cellImages.put("_", "file:resources/exit.bmp");
-        cellImages.put(">", "file:resources/exit.bmp");
+
 
         g.createInitialMap();
-        for (int i = 0; i < g.getSize()-1; i++){
-            for (int j = 0; j < g.getSize()-1; j++){
-                Image image = new Image(cellImages.get(g.getCell(i,j)));
-                ImageView iv1 = new ImageView();
-                iv1.setImage(image);
-                grid.add(iv1,i,j,1,1);
-            }
+        g.printMap();
+        updateGui();
 
-        }
+
+
 
 
         System.out.println("test");
@@ -66,7 +52,43 @@ public class Controller {
         System.out.println(grid.getRowCount());
     }
 
-    public void updateGui(){
+    public void updateGui() {
+        for(int row = 0;row < 10;row++){
+            for(int col = 0;col<10;col++){
+                Cell c = new Cell(g.getCell(row,col));
+                c.setImage();
+                grid.add(c,col,row);
+            }
+        }
+    }
+
+    public class Cell extends Pane{
+        String token;
+        HashMap<String,String> cellImages = new HashMap<String,String>();
+
+        public Cell(String token){
+            this.token = token;
+
+        }
+
+
+
+
+            public void setImage(){
+                cellImages.put("c", "coin.bmp");
+                cellImages.put("t", "trap.bmp");
+                cellImages.put("a", "apple.jpg");
+                cellImages.put("e", "Exit.bmp");
+                cellImages.put("_", "nothing.bmp");
+                cellImages.put(">", "entrance.bmp");
+                Image i = new Image(cellImages.get(token));
+                ImageView iv = new ImageView(i);
+                iv.setFitHeight(50);
+                iv.setFitWidth(50);
+                getChildren().add(iv);
+            }
+
+
 
     }
 
