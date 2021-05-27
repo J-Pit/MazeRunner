@@ -16,7 +16,7 @@ public class TestGameEngine {
     void testMap(){
         GameEngine ge = new GameEngine(10);
         ge.createInitialMap();
-        assertEquals(ge.getDifficulty(), ge.getCell("t"));
+        assertEquals(ge.getDifficulty(), ge.getCellCount("t"));
 
     }
 
