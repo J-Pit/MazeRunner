@@ -13,8 +13,7 @@ import javafx.stage.Stage;
  * NOTE: Do NOT run this class directly in IntelliJ - run 'RunGame' instead.
  */
 public class GameGUI extends Application {
-    // TODO: move this to Controller class if you use FXML...
-    private GameEngine engine = new GameEngine(10);
+
 
 
     @Override
