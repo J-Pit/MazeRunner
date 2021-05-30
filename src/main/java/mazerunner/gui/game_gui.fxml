@@ -30,4 +30,12 @@
          </children>
       </VBox>
    </left>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="stamina" editable="false" />
+            <TextField fx:id="coins" editable="false" />
+         </children>
+      </VBox>
+   </right>
 </BorderPane>

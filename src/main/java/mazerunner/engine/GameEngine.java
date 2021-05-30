@@ -1,5 +1,4 @@
 package mazerunner.engine;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,7 +8,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-
 public class GameEngine {
 
     private boolean end = false;
@@ -36,21 +34,6 @@ public class GameEngine {
     private int apples = 10 - Difficulty;
     private int exitCell = 1;
 
-    public int getTraps() {
-        return traps;
-    }
-
-    public int getCoins() {
-        return coins;
-    }
-
-    public int getApples() {
-        return apples;
-    }
-
-    public int getExitCell() {
-        return exitCell;
-    }
 
     /**
      * Iterates through the map and counts for a specific cell for testing purposes
@@ -59,7 +42,7 @@ public class GameEngine {
         int count = 0;
         for(String[] i :map){
             for(String n : i){
-                if (n == c){
+                if (n.equals(c)){
                     count +=1;
                 }
             }
@@ -195,7 +178,34 @@ public class GameEngine {
             output.close();
         }
 
+        public void onEnter(Player p) {
+            switch (returnUnder(p.getPlayerX(), p.getPlayerY())) {
+                case "c":
+                    p.setCoins(p.getCoins() + 1);
+                    setUnder(p.getPlayerX(), p.getPlayerY(), "_");
+                    break;
+                case "t":
+                    p.setCoins(p.getCoins() - 1);
+                    setUnder(p.getPlayerX(), p.getPlayerY(), "t");
+                    break;
+                case "a":
+                    p.setStamina(p.getStamina() + 3);
+                    setUnder(p.getPlayerX(), p.getPlayerY(), "_");
+                    break;
+                case "e":
+                    setEnd(true);
+                    System.out.println("You win!");
+                    break;
 
+            }
+        }
+        public void over(Player p) {
+            if (p.getStamina() < 1 || p.getCoins() < 0) {
+                setEnd(true);
+                System.out.println("Game Over!");
+
+            }
+        }
 
         /**
          * plays the game in text based version
@@ -219,31 +229,16 @@ public class GameEngine {
                     load(p);
                 }
                 engine.drawPlayer(p.getPlayerX(), p.getPlayerY());
-                switch (engine.returnUnder(p.getPlayerX(), p.getPlayerY())) {
-                    case "c":
-                        p.setCoins(p.getCoins() + 1);
-                        engine.setUnder(p.getPlayerX(), p.getPlayerY(), "_");
-                        break;
-                    case "t":
-                        p.setCoins(p.getCoins() - 1);
-                        engine.setUnder(p.getPlayerX(), p.getPlayerY(), "t");
-                        break;
-                    case "a":
-                        p.setStamina(p.getStamina() + 3);
-                        engine.setUnder(p.getPlayerX(), p.getPlayerY(), "_");
-                        break;
-                    case "e":
-                        engine.setEnd(true);
-                        System.out.println("You win!");
-                        break;
+                onEnter(p);
                 }
                 if (p.getStamina() < 1 || p.getCoins() < 0) {
                     engine.setEnd(true);
                     System.out.println("Game Over!");
                 }
+                over(p);
 
             }
-        }
+
 
         public static void main(String[] args) throws IOException {
             mazerunner.engine.runText r = new mazerunner.engine.runText();
