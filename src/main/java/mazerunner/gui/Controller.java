@@ -10,6 +10,8 @@ import javafx.scene.layout.Pane;
 import mazerunner.engine.GameEngine;
 import mazerunner.engine.Player;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class Controller {
@@ -29,7 +31,10 @@ public class Controller {
     private TextField coins;
     @FXML
     private Button newGame;
-
+    @FXML
+    private Button load;
+    @FXML
+    private Button save;
     @FXML
     private TextField difficulty;
     GameEngine g = new GameEngine(10);
@@ -37,19 +42,31 @@ public class Controller {
 
     @FXML
     private Cell[][] cell =  new Cell[g.getSize()][g.getSize()];
-        // Pane to hold cell
 
     @FXML
     public void initialize(){
-        g.createInitialMap();
         newGame.setOnAction(e -> {
             g.setDifficulty(Integer.parseInt(difficulty.getText()));
             g.createInitialMap();
-
             updateGui();
         });
-        g.printMap();
-        updateGui();
+        save.setOnAction(e -> {
+            try {
+                g.save(p);
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+        load.setOnAction(e -> {
+            try {
+                g.createInitialMap();
+                g.load(p);
+
+            } catch (IOException ioException) {
+                System.out.println("No save file found");
+            }
+            updateGui();
+        });
         up.setOnAction(e -> {
            p.move("up");
             updateGui();
@@ -70,6 +87,11 @@ public class Controller {
     }
 
     public void updateGui() {
+        g.drawPlayer(p.getPlayerX(), p.getPlayerY());
+        g.onEnter(p);
+        if(g.isEnd()){
+            Platform.exit();
+        }
         stamina.setText("Stamina: "+p.getStamina());
         coins.setText("Coins: "+ p.getCoins());
         grid.getChildren().clear();
@@ -78,34 +100,24 @@ public class Controller {
                 cell[row][col] = new Cell(g.getCell(row,col));
                 cell[row][col].setImage();
                 grid.add(cell[row][col],col,row);
-
-
             }
         }
         Cell P = new Cell("p");
         P.setImage();
-
         grid.add(P,p.getPlayerY(),p.getPlayerX());
-        g.onEnter(p);
-        g.over(p);
-        if(g.isEnd()){
-            Platform.exit();
-        }
     }
 
     public class Cell extends Pane{
-        String token;
+        private String token;
         public Cell(String token){
             this.token = token;
-
         }
             public void setImage(){
-
                 HashMap<String,String> cellImages = new HashMap<String,String>();
                 cellImages.put("c", "coin.bmp");
                 cellImages.put("t", "trap.bmp");
-                cellImages.put("a", "apple.jpg");
-                cellImages.put("e", "Exit.bmp");
+                cellImages.put("a", "apple.bmp");
+                cellImages.put("e", "exit.bmp");
                 cellImages.put("_", "nothing.bmp");
                 cellImages.put(">", "entrance.bmp");
                 cellImages.put("p", "player.bmp");
@@ -114,7 +126,6 @@ public class Controller {
                 iv.setFitHeight(50);
                 iv.setFitWidth(50);
                 getChildren().add(iv);
-            }
+        }
     }
-
 }

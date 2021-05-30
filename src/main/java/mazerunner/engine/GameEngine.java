@@ -29,10 +29,6 @@ public class GameEngine {
     public void setDifficulty(int difficulty) {
         Difficulty = difficulty;
     }
-    private int traps = Difficulty;
-    private int coins = 5;
-    private int apples = 10 - Difficulty;
-    private int exitCell = 1;
 
 
     /**
@@ -87,6 +83,10 @@ public class GameEngine {
      * @// TODO: 25/5/21 fix cells being overwritten
      */
     public void createInitialMap() {
+        int traps = Difficulty;
+        int coins = 5;
+        int apples = 10 - Difficulty;
+        int exitCell = 1;
         for(String[] i:map){
             Arrays.fill(i,"_");
         }
@@ -197,13 +197,10 @@ public class GameEngine {
                     System.out.println("You win!");
                     break;
 
-            }
-        }
-        public void over(Player p) {
-            if (p.getStamina() < 1 || p.getCoins() < 0) {
+                }
+                if (p.getStamina() < 0 || p.getCoins() < 0) {
                 setEnd(true);
                 System.out.println("Game Over!");
-
             }
         }
 
@@ -231,13 +228,7 @@ public class GameEngine {
                 engine.drawPlayer(p.getPlayerX(), p.getPlayerY());
                 onEnter(p);
                 }
-                if (p.getStamina() < 1 || p.getCoins() < 0) {
-                    engine.setEnd(true);
-                    System.out.println("Game Over!");
                 }
-                over(p);
-
-            }
 
 
         public static void main(String[] args) throws IOException {
