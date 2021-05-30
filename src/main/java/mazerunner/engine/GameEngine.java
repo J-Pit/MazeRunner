@@ -30,7 +30,6 @@ public class GameEngine {
         Difficulty = difficulty;
     }
 
-
     /**
      * Iterates through the map and counts for a specific cell for testing purposes
      */
@@ -125,10 +124,8 @@ public class GameEngine {
         map[x][y] = "P";
         printMap();
         map[x][y] = under;
-
-
-
     }
+
     /**
      * Returns the cell where the player is
      */
@@ -197,8 +194,8 @@ public class GameEngine {
                     System.out.println("You win!");
                     break;
 
-                }
-                if (p.getStamina() < 0 || p.getCoins() < 0) {
+            }
+            if (p.getStamina() < 1 || p.getCoins() < 0) {
                 setEnd(true);
                 System.out.println("Game Over!");
             }
@@ -208,12 +205,11 @@ public class GameEngine {
          * plays the game in text based version
          */
         public void playGame() throws IOException {
-            GameEngine engine = new GameEngine(10);
-            System.out.printf("The size of map is %d * %d\n", engine.getSize(), engine.getSize());
-            engine.createInitialMap();
+            System.out.printf("The size of map is %d * %d\n", getSize(), getSize());
+            createInitialMap();
             Player p = new Player();
-            engine.drawPlayer(p.getPlayerX(), p.getPlayerY());
-            while (!engine.isEnd()) {
+            drawPlayer(p.getPlayerX(), p.getPlayerY());
+            while (!isEnd()) {
                 System.out.printf("Stamina: %d\n",p.getStamina());
                 System.out.printf("Coins: %d\n",p.getCoins());
                 Scanner S = new Scanner(System.in);
@@ -225,15 +221,14 @@ public class GameEngine {
                 else if (s.equals("load")){
                     load(p);
                 }
-                engine.drawPlayer(p.getPlayerX(), p.getPlayerY());
+               drawPlayer(p.getPlayerX(), p.getPlayerY());
                 onEnter(p);
-                }
-                }
-
+            }
+        }
 
         public static void main(String[] args) throws IOException {
-            mazerunner.engine.runText r = new mazerunner.engine.runText();
-            r.playGame();
+            GameEngine e = new GameEngine(10);
+            e.playGame();
         }
     }
 

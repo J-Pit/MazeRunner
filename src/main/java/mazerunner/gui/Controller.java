@@ -9,7 +9,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import mazerunner.engine.GameEngine;
 import mazerunner.engine.Player;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
