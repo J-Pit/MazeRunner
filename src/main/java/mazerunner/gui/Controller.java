@@ -5,13 +5,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import mazerunner.engine.GameEngine;
 import mazerunner.engine.Player;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import javafx.scene.control.Tooltip;
 
 public class Controller {
     @FXML
@@ -36,6 +41,10 @@ public class Controller {
     private Button save;
     @FXML
     private TextField difficulty;
+    @FXML
+    private Button help;
+    @FXML
+    private BorderPane border;
     GameEngine g = new GameEngine(10);
     Player p = new Player();
 
@@ -44,9 +53,17 @@ public class Controller {
 
     @FXML
     public void initialize(){
+        Tooltip t = new Tooltip("Get to the exit without losing your stamina. " +
+                                    "Apples increase stamina by 3 " +
+                                    "passing through traps costs 1 coin, going through one with 0 coins is an instant loss");
+        Tooltip.install(help,t);
         newGame.setOnAction(e -> {
             g.setDifficulty(Integer.parseInt(difficulty.getText()));
             g.createInitialMap();
+            p.setPlayerY(0);
+            p.setPlayerX(9);
+            p.setStamina(12);
+            p.setCoins(0);
             updateGui();
         });
         save.setOnAction(e -> {
@@ -89,7 +106,9 @@ public class Controller {
         g.drawPlayer(p.getPlayerX(), p.getPlayerY());
         g.onEnter(p);
         if(g.isEnd()){
-            Platform.exit();
+            Text end = new Text("Game Over! \n Score: " + p.getScore());
+            border.getChildren().remove(grid);
+            border.setCenter(end);
         }
         stamina.setText("Stamina: "+p.getStamina());
         coins.setText("Coins: "+ p.getCoins());

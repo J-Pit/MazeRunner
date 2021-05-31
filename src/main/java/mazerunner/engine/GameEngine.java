@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 public class GameEngine {
 
@@ -31,7 +30,7 @@ public class GameEngine {
     }
 
     /**
-     * Iterates through the map and counts for a specific cell for testing purposes
+     * Iterates through the map and counts for a specific cell.
      */
     public int getCellCount(String c){
         int count = 0;
@@ -43,6 +42,12 @@ public class GameEngine {
             }
         }
         return count;
+    }
+    /**
+     * sets a cell on the map.
+     */
+    public void setCell(int x, int y, String c){
+        map[x][y] = c;
     }
     /**
      * Returns the cell based off co-ords
@@ -79,7 +84,7 @@ public class GameEngine {
 
     /**
      * adds traps, coins, apples and an exit to map
-     * @// TODO: 25/5/21 fix cells being overwritten
+     *
      */
     public void createInitialMap() {
         int traps = Difficulty;
@@ -94,26 +99,21 @@ public class GameEngine {
         String[] cells = new String[]{"t","c","a","e"};
         for(int i = 0;i < cells.length;i++){
             while(numCells[i] > 0){
-                map[(int) (Math.random() * (8 + 1))][(int) (Math.random() * (9 + 1))] = cells[i];
-                numCells[i] -=1;
+                int x = (int) (Math.random() * (8 + 1));
+                int y = (int) (Math.random() * (9 + 1));
+                if(map[x][y].equals("_")){
+                    map[x][y] = cells[i];
+                    numCells[i] -=1;
+                }
+                else{
+                    continue;
+                }
+
+
             }
         }
 
         map[9][0] = ">";
-    }
-
-    /**
-     * prints map to screen without player
-     */
-    public void printMap() {
-        for (String[] row : map) {
-            for (String cell : row) {
-                System.out.print(cell);
-            }
-            System.out.println();
-
-        }
-        System.out.println();
     }
 
     /**
@@ -122,19 +122,16 @@ public class GameEngine {
     public void drawPlayer(int x, int y) {
         String under = map[x][y];
         map[x][y] = "P";
-        printMap();
+        for (String[] row : map) {
+            for (String cell : row) {
+                System.out.print(cell);
+            }
+            System.out.println();
+        }
+        System.out.println();
         map[x][y] = under;
     }
 
-    /**
-     * Returns the cell where the player is
-     */
-    public String returnUnder(int x, int y){
-        return map[x][y];
-    }
-    public void setUnder(int x, int y, String s){
-        map[x][y] = s;
-    }
     /**
      * outputs the map to .txt files
      */
@@ -158,10 +155,10 @@ public class GameEngine {
         public void load(Player p) throws IOException {
             Scanner input = new Scanner(new File("save.txt"));
             inputMap(input);
-            String temp = Files.readAllLines(Path.of("save.txt")).get(10);
-            p.setPlayerX(Integer.parseInt(temp));
-            temp = Files.readAllLines(Path.of("save.txt")).get(11);
-            p.setPlayerY(Integer.parseInt(temp));
+            p.setPlayerX(Integer.parseInt(Files.readAllLines(Path.of("save.txt")).get(10)));
+            p.setPlayerY(Integer.parseInt(Files.readAllLines(Path.of("save.txt")).get(11)));
+            p.setStamina(Integer.parseInt(Files.readAllLines(Path.of("save.txt")).get(12)));
+            p.setCoins(Integer.parseInt(Files.readAllLines(Path.of("save.txt")).get(13)));
 
         }
 
@@ -176,28 +173,29 @@ public class GameEngine {
         }
 
         public void onEnter(Player p) {
-            switch (returnUnder(p.getPlayerX(), p.getPlayerY())) {
+            switch (getCell(p.getPlayerX(),p.getPlayerY())){
                 case "c":
                     p.setCoins(p.getCoins() + 1);
-                    setUnder(p.getPlayerX(), p.getPlayerY(), "_");
+                    setCell(p.getPlayerX(), p.getPlayerY(), "_");
                     break;
                 case "t":
                     p.setCoins(p.getCoins() - 1);
-                    setUnder(p.getPlayerX(), p.getPlayerY(), "t");
+                    setCell(p.getPlayerX(), p.getPlayerY(), "t");
                     break;
                 case "a":
                     p.setStamina(p.getStamina() + 3);
-                    setUnder(p.getPlayerX(), p.getPlayerY(), "_");
+                    setCell(p.getPlayerX(), p.getPlayerY(), "_");
                     break;
                 case "e":
                     setEnd(true);
                     System.out.println("You win!");
+                    p.setScore(p.getCoins());
                     break;
-
             }
             if (p.getStamina() < 1 || p.getCoins() < 0) {
                 setEnd(true);
                 System.out.println("Game Over!");
+                p.setScore(-1);
             }
         }
 
