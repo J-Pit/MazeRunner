@@ -45,8 +45,8 @@ public class Controller {
     private Button help;
     @FXML
     private BorderPane border;
-    GameEngine g = new GameEngine(10);
-    Player p = new Player();
+    private GameEngine g = new GameEngine(10);
+    private Player p = new Player();
 
     @FXML
     private Cell[][] cell =  new Cell[g.getSize()][g.getSize()];

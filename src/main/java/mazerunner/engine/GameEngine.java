@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Scanner;
 public class GameEngine {
-
     private boolean end = false;
 
     public boolean isEnd() {
@@ -19,14 +18,14 @@ public class GameEngine {
         this.end = win;
     }
 
-    private int Difficulty = 5;
+    private int difficulty = 5;
 
     public int getDifficulty() {
-        return Difficulty;
+        return difficulty;
     }
 
     public void setDifficulty(int difficulty) {
-        Difficulty = difficulty;
+        this.difficulty = difficulty;
     }
 
     /**
@@ -87,9 +86,9 @@ public class GameEngine {
      *
      */
     public void createInitialMap() {
-        int traps = Difficulty;
+        int traps = difficulty;
         int coins = 5;
-        int apples = 10 - Difficulty;
+        int apples = 10 - difficulty;
         int exitCell = 1;
         for(String[] i:map){
             Arrays.fill(i,"_");
@@ -152,6 +151,9 @@ public class GameEngine {
         }
 
     }
+    /**
+     * loads the map and player stats from a .txt file
+     */
         public void load(Player p) throws IOException {
             Scanner input = new Scanner(new File("save.txt"));
             inputMap(input);
@@ -161,7 +163,9 @@ public class GameEngine {
             p.setCoins(Integer.parseInt(Files.readAllLines(Path.of("save.txt")).get(13)));
 
         }
-
+    /**
+     * loads the map and player stats to a .txt file
+     */
         public void save(Player p) throws FileNotFoundException {
             PrintWriter output = new PrintWriter("save.txt");
             outputMap(output);
@@ -172,6 +176,9 @@ public class GameEngine {
             output.close();
         }
 
+    /**
+     * function for interacting with items on the map
+     */
         public void onEnter(Player p) {
             switch (getCell(p.getPlayerX(),p.getPlayerY())){
                 case "c":
